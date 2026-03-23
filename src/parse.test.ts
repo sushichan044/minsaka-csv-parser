@@ -128,7 +128,7 @@ const warningCases: Array<{
       const first = results[0];
       assert.isTrue(first?.ok);
       expect(first.warnings).toHaveLength(1);
-      expect(first.warnings[0]).toContain("行1");
+      expect(first.warnings[0]).toContain("line 1");
       expect(first.warnings[0]).toContain("user1");
       expect(first.warnings[0]).toContain("1回目");
     },
@@ -159,6 +159,31 @@ describe("parseStream", () => {
   it.each(warningCases)("$name", async ({ assert: assertFn, headers, rows }) => {
     const csv = [headers ?? VALID_HEADERS, ...rows].join("\n");
     await assertFn(parseStream(stringToStream(csv)));
+  });
+
+  it("末尾の空 donation 列が省略された行でもパースできる", async () => {
+    const fullHeaders = [
+      VALID_HEADERS,
+      "2回目の参加一口金額,2回目の参加口数,2回目の参加合計金額金額,2回目の参加日時",
+      "3回目の参加一口金額,3回目の参加口数,3回目の参加合計金額金額,3回目の参加日時",
+      "4回目の参加一口金額,4回目の参加口数,4回目の参加合計金額金額,4回目の参加日時",
+      "5回目の参加一口金額,5回目の参加口数,5回目の参加合計金額金額,5回目の参加日時",
+      "6回目の参加一口金額,6回目の参加口数,6回目の参加合計金額金額,6回目の参加日時",
+      "7回目の参加一口金額,7回目の参加口数,7回目の参加合計金額金額,7回目の参加日時",
+      "8回目の参加一口金額,8回目の参加口数,8回目の参加合計金額金額,8回目の参加日時",
+      "9回目の参加一口金額,9回目の参加口数,9回目の参加合計金額金額,9回目の参加日時",
+      "10回目の参加一口金額,10回目の参加口数,10回目の参加合計金額金額,10回目の参加日時",
+    ].join(",");
+    const csv = [fullHeaders, VALID_ROW].join("\n");
+
+    const result = await parseAsync(csv);
+
+    if (!result.ok) {
+      throw result.error;
+    }
+
+    expect(result.data).toHaveLength(1);
+    expect(result.data[0]?.参加履歴).toHaveLength(1);
   });
 });
 

@@ -35,6 +35,12 @@ export async function parseAsync(
 
 type StreamingResult = Result<MinsakaSupporter, ParseError | ValidationError>;
 
+function isRecoverableParseError(error: Papa.ParseError): boolean {
+  // minsaka の CSV は、optional な列に値がない場合に列自体が存在しない
+  // よって TooFewFields が発生するが、これは許容する
+  return error.type === "FieldMismatch" && error.code === "TooFewFields";
+}
+
 function checkDonationTotals(supporter: MinsakaSupporter, rowNumber: number): string[] {
   const warnings: string[] = [];
   for (const [index, donation] of supporter.参加履歴.entries()) {
@@ -62,13 +68,18 @@ export function parseStream(input: ReadableStream<Uint8Array>): ReadableStream<S
       let rowNumber = 1;
       Papa.parse(nodeReadable, {
         complete: () => controller.close(),
+
         header: true,
         skipEmptyLines: true,
         step: (result) => {
           const currentRow = rowNumber++;
-          if (result.errors.length > 0) {
+          const unrecoverableErrors = result.errors.filter(
+            (error) => !isRecoverableParseError(error),
+          );
+
+          if (unrecoverableErrors.length > 0) {
             controller.enqueue({
-              error: new ParseError(result.errors, result.meta),
+              error: new ParseError(unrecoverableErrors, result.meta),
               ok: false,
             });
             return;
