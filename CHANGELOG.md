@@ -18,7 +18,7 @@
 
 ## 0.0.2
 
-*No significant changes*
+_No significant changes_
 
 ##### &nbsp;&nbsp;&nbsp;&nbsp;[View changes on GitHub](https://github.com/sushichan044/minsaka-csv-parser/compare/0.0.1...0.0.2)
 
