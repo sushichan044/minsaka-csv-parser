@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.0.4
+
+### &nbsp;&nbsp;&nbsp;Features
+
+- Add excludeNonPublishableSupporters &nbsp;-&nbsp; by **sushichan044** [<samp>(7edd7)</samp>](https://github.com/sushichan044/minsaka-csv-parser/commit/7edd732)
+
+##### &nbsp;&nbsp;&nbsp;&nbsp;[View changes on GitHub](https://github.com/sushichan044/minsaka-csv-parser/compare/0.0.3...0.0.4)
+
 ## 0.0.3
 
 ### &nbsp;&nbsp;&nbsp;Bug Fixes
