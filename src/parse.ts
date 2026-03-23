@@ -1,5 +1,5 @@
 import { Readable } from "node:stream";
-import { parse } from "papaparse";
+import PaPa from "papaparse";
 import * as v from "valibot";
 
 import type { MinsakaSupporter, Result } from "./types.ts";
@@ -66,7 +66,7 @@ export function parseStream(input: ReadableStream): ReadableStream<StreamingResu
     },
     start(controller) {
       let rowNumber = 1;
-      parse(nodeReadable, {
+      PaPa.parse(nodeReadable, {
         complete: () => controller.close(),
 
         header: true,
