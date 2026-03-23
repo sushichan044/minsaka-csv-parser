@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.0.7
+
+### &nbsp;&nbsp;&nbsp;Bug Fixes
+
+- Papaparse is using weird module &nbsp;-&nbsp; by **sushichan044** [<samp>(f95c1)</samp>](https://github.com/sushichan044/minsaka-csv-parser/commit/f95c11c)
+
+##### &nbsp;&nbsp;&nbsp;&nbsp;[View changes on GitHub](https://github.com/sushichan044/minsaka-csv-parser/compare/0.0.6...0.0.7)
+
 ## 0.0.6
 
 ### &nbsp;&nbsp;&nbsp;Bug Fixes
