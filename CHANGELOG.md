@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.0.6
+
+### &nbsp;&nbsp;&nbsp;Bug Fixes
+
+- Rename filter fn &nbsp;-&nbsp; by **sushichan044** [<samp>(5a756)</samp>](https://github.com/sushichan044/minsaka-csv-parser/commit/5a756b9)
+- Stable import &nbsp;-&nbsp; by **sushichan044** [<samp>(b47ec)</samp>](https://github.com/sushichan044/minsaka-csv-parser/commit/b47eca2)
+
+##### &nbsp;&nbsp;&nbsp;&nbsp;[View changes on GitHub](https://github.com/sushichan044/minsaka-csv-parser/compare/0.0.5...0.0.6)
+
 ## 0.0.5
 
 ### &nbsp;&nbsp;&nbsp;Bug Fixes
