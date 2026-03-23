@@ -57,7 +57,7 @@ function checkDonationTotals(supporter: MinsakaSupporter, rowNumber: number): st
 /**
  * Parse a Minsaka CSV stream into structured supporter data, row by row.
  */
-export function parseStream(input: ReadableStream<Uint8Array>): ReadableStream<StreamingResult> {
+export function parseStream(input: ReadableStream): ReadableStream<StreamingResult> {
   const nodeReadable = Readable.fromWeb(input);
 
   return new ReadableStream<StreamingResult>({
