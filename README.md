@@ -56,7 +56,7 @@ import Stream from "node:stream";
 import { parseStream } from "@sushichan044/minsaka-csv-parser";
 
 const file = await open("./supporters.csv");
-const stream = Stream.Readable.toWeb(file.createReadStream())
+const stream = Stream.Readable.toWeb(file.createReadStream());
 
 for await (const result of parseStream(stream)) {
   if (!result.ok) {
