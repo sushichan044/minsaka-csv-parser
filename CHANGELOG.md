@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.0.8
+
+### &nbsp;&nbsp;&nbsp;Features
+
+- Enable immutable release &nbsp;-&nbsp; by **sushichan044** [<samp>(33adb)</samp>](https://github.com/sushichan044/minsaka-csv-parser/commit/33adbbb)
+
+##### &nbsp;&nbsp;&nbsp;&nbsp;[View changes on GitHub](https://github.com/sushichan044/minsaka-csv-parser/compare/0.0.7...0.0.8)
+
 ## 0.0.7
 
 ### &nbsp;&nbsp;&nbsp;Bug Fixes
