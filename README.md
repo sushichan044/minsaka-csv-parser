@@ -66,3 +66,26 @@ for await (const result of stream) {
   console.log(result.warnings);
 }
 ```
+
+### `isPublishableSupporter` / `selectPublishableSupporters`
+
+企画への支援申込時に名簿への掲載を希望した支援者のみを抽出するためのユーティリティ関数も提供しています。
+
+```ts
+import { readFile } from "node:fs/promises";
+import {
+  isPublishableSupporter,
+  selectPublishableSupporters,
+} from "@sushichan044/minsaka-csv-parser";
+
+const csv = await readFile("./supporters.csv", "utf8");
+const result = await parseAsync(csv);
+
+if (!result.ok) {
+  throw result.error;
+}
+
+const publishableSupporters = selectPublishableSupporters(result.data);
+console.log(publishableSupporters); // 支援者のうち、名簿への掲載を希望した人だけが出力される
+console.log(publishableSupporters.every(isPublishableSupporter)); // true
+```
