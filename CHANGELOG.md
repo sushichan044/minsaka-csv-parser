@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.0.5
+
+### &nbsp;&nbsp;&nbsp;Bug Fixes
+
+- Relax typing &nbsp;-&nbsp; by **sushichan044** [<samp>(98e61)</samp>](https://github.com/sushichan044/minsaka-csv-parser/commit/98e6182)
+
+##### &nbsp;&nbsp;&nbsp;&nbsp;[View changes on GitHub](https://github.com/sushichan044/minsaka-csv-parser/compare/0.0.4...0.0.5)
+
 ## 0.0.4
 
 ### &nbsp;&nbsp;&nbsp;Features
