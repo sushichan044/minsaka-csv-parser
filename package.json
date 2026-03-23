@@ -1,0 +1,80 @@
+{
+  "name": "@sushichan044/minsaka-csv-parser",
+  "version": "0.0.0",
+  "private": true,
+  "description": "",
+  "keywords": [],
+  "homepage": "https://github.com/sushichan044/minsaka-csv-parser#readme",
+  "bugs": {
+    "url": "https://github.com/sushichan044/minsaka-csv-parser/issues"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "sushichan044",
+    "url": "https://github.com/sushichan044"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sushichan044/minsaka-csv-parser.git"
+  },
+  "funding": "https://github.com/sponsors/sushichan044",
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "scripts": {
+    "lint": "eslint --max-warnings 0 --fix",
+    "lint:check": "eslint --max-warnings 0",
+    "format": "oxfmt",
+    "format:check": "oxfmt --check",
+    "typecheck": "tsgo --noEmit",
+    "test": "vitest --run",
+    "check": "pnpm run format:check && pnpm run typecheck && pnpm run lint:check && pnpm run test && pnpm run build",
+    "build": "tsdown",
+    "prepublishOnly": "pnpm run build",
+    "pkg-pr-new": "pkg-pr-new publish --compact --comment=update --pnpm"
+  },
+  "dependencies": {
+    "papaparse": "catalog:prod",
+    "valibot": "catalog:prod"
+  },
+  "devDependencies": {
+    "@arethetypeswrong/core": "catalog:dev",
+    "@types/node": "catalog:dev",
+    "@types/papaparse": "catalog:dev",
+    "@typescript/native-preview": "catalog:dev",
+    "@virtual-live-lab/eslint-config": "catalog:dev",
+    "@virtual-live-lab/tsconfig": "catalog:dev",
+    "eslint": "catalog:dev",
+    "eslint-plugin-import-access": "catalog:dev",
+    "oxfmt": "catalog:dev",
+    "pkg-pr-new": "catalog:dev",
+    "publint": "catalog:dev",
+    "release-it": "catalog:dev",
+    "release-it-pnpm": "catalog:dev",
+    "tsdown": "catalog:dev",
+    "typescript": "catalog:dev",
+    "typescript-eslint": "catalog:dev",
+    "unplugin-unused": "catalog:dev",
+    "vite": "catalog:dev",
+    "vitest": "catalog:dev"
+  },
+  "engines": {
+    "node": ">=20.19.0"
+  },
+  "packageManager": "pnpm@10.23.0"
+}
