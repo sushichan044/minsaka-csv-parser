@@ -1,7 +1,7 @@
 import { assert, describe, expect, it } from "vitest";
 
 import { ParseError, ValidationError } from "./errors";
-import { parseStream } from "./parse";
+import { parseAsync, parseStream } from "./parse";
 
 function stringToStream(str: string): ReadableStream<Uint8Array> {
   return new ReadableStream({
@@ -106,9 +106,68 @@ const cases: Array<{
   },
 ];
 
+const warningCases: Array<{
+  assert: (stream: Stream) => Promise<void>;
+  headers?: string;
+  name: string;
+  rows: string[];
+}> = [
+  {
+    async assert(stream) {
+      const results = await collect(stream);
+      const first = results[0];
+      assert.isTrue(first?.ok);
+      expect(first.warnings).toEqual([]);
+    },
+    name: "金額が一致する行は warnings が空で emit する",
+    rows: [VALID_ROW],
+  },
+  {
+    async assert(stream) {
+      const results = await collect(stream);
+      const first = results[0];
+      assert.isTrue(first?.ok);
+      expect(first.warnings).toHaveLength(1);
+      expect(first.warnings[0]).toContain("行1");
+      expect(first.warnings[0]).toContain("user1");
+      expect(first.warnings[0]).toContain("1回目");
+    },
+    name: "一口金額 × 参加口数 ≠ 合計金額 の行は warnings にメッセージが含まれる",
+    rows: ["user1,表示名1,1000,3,5000,2024-01-01T00:00:00"],
+  },
+  {
+    async assert(stream) {
+      const results = await collect(stream);
+      const first = results[0];
+      assert.isTrue(first?.ok);
+      expect(first.warnings).toHaveLength(1);
+      expect(first.warnings[0]).toContain("2回目");
+    },
+    headers:
+      "ユーザー名,掲載名,1回目の参加一口金額,1回目の参加口数,1回目の参加合計金額金額,1回目の参加日時,2回目の参加一口金額,2回目の参加口数,2回目の参加合計金額金額,2回目の参加日時",
+    name: "複数回の参加履歴で一部が不整合のとき不整合のある回だけ warning が出る",
+    rows: ["user1,表示名1,1000,1,1000,2024-01-01T00:00:00,2000,2,9999,2024-02-01T00:00:00"],
+  },
+];
+
 describe("parseStream", () => {
   it.each(cases)("$name", async ({ assert: assertFn, rows }) => {
     const csv = [VALID_HEADERS, ...rows].join("\n");
     await assertFn(parseStream(stringToStream(csv)));
+  });
+
+  it.each(warningCases)("$name", async ({ assert: assertFn, headers, rows }) => {
+    const csv = [headers ?? VALID_HEADERS, ...rows].join("\n");
+    await assertFn(parseStream(stringToStream(csv)));
+  });
+});
+
+describe("parseAsync", () => {
+  it("複数行の warnings を全て集約する", async () => {
+    const inconsistentRow = "user1,表示名1,1000,3,5000,2024-01-01T00:00:00";
+    const csv = [VALID_HEADERS, inconsistentRow, inconsistentRow].join("\n");
+    const result = await parseAsync(csv);
+    assert.isTrue(result.ok);
+    expect(result.warnings).toHaveLength(2);
   });
 });

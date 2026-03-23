@@ -11,4 +11,6 @@ export type MinsakaSupporter = {
   掲載名: string;
 };
 
-export type Result<T, E extends Error> = { data: T; ok: true } | { error: E; ok: false };
+export type Result<T, E extends Error> =
+  | { data: T; ok: true; warnings: string[] }
+  | { error: E; ok: false };

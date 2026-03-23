@@ -21,17 +21,32 @@ export async function parseAsync(
   });
 
   const supporters: MinsakaSupporter[] = [];
+  const allWarnings: string[] = [];
   for await (const result of parseStream(input)) {
     if (!result.ok) {
       return { error: result.error, ok: false };
     }
     supporters.push(result.data);
+    allWarnings.push(...result.warnings);
   }
 
-  return { data: supporters, ok: true };
+  return { data: supporters, ok: true, warnings: allWarnings };
 }
 
 type StreamingResult = Result<MinsakaSupporter, ParseError | ValidationError>;
+
+function checkDonationTotals(supporter: MinsakaSupporter, rowNumber: number): string[] {
+  const warnings: string[] = [];
+  for (const [index, donation] of supporter.参加履歴.entries()) {
+    const expected = donation.一口金額 * donation.参加口数;
+    if (expected !== donation.合計金額) {
+      warnings.push(
+        `line ${rowNumber} (${supporter.ユーザー名}): ${index + 1}回目の参加: 一口金額(${donation.一口金額}) × 参加口数(${donation.参加口数}) = ${expected} が 合計金額(${donation.合計金額}) と一致しません`,
+      );
+    }
+  }
+  return warnings;
+}
 
 /**
  * Parse a Minsaka CSV stream into structured supporter data, row by row.
@@ -44,11 +59,13 @@ export function parseStream(input: ReadableStream<Uint8Array>): ReadableStream<S
       nodeReadable.destroy();
     },
     start(controller) {
+      let rowNumber = 1;
       Papa.parse(nodeReadable, {
         complete: () => controller.close(),
         header: true,
         skipEmptyLines: true,
         step: (result) => {
+          const currentRow = rowNumber++;
           if (result.errors.length > 0) {
             controller.enqueue({
               error: new ParseError(result.errors, result.meta),
@@ -63,9 +80,11 @@ export function parseStream(input: ReadableStream<Uint8Array>): ReadableStream<S
               error: new ValidationError("CSV validation error", validated.issues),
               ok: false,
             });
-          } else {
-            controller.enqueue({ data: validated.output, ok: true });
+            return;
           }
+
+          const warnings = checkDonationTotals(validated.output, currentRow);
+          controller.enqueue({ data: validated.output, ok: true, warnings });
         },
       });
     },
