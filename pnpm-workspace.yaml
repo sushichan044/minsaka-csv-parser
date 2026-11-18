@@ -17,7 +17,7 @@ catalogs:
     typescript: ^5.9.3
     typescript-eslint: ^8.57.1
     unplugin-unused: ^0.5.7
-    vite: ^8.0.1
+    vite: ^8.3.8
     vitest: ^4.1.0
   prod:
     papaparse: ^5.5.3
